@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pablo Velarde · Lecturas</title>
+<meta name="description" content="Lecturas de aviación ejecutiva: los artículos citados en Instagram.">
+<meta property="og:title" content="Pablo Velarde · Lecturas">
+<meta property="og:description" content="Lecturas de aviación ejecutiva: los artículos citados en Instagram.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6f9;--card:#ffffff;--text:#0c1a2a;--muted:#5d6f82;--line:#dfe5ec;--accent:#c98b1e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1624;--card:#13253a;--text:#f2f5f8;--muted:#9bb0c4;--line:#22384f;--accent:#e8b04b}}
+:root[data-theme="dark"]{--bg:#0a1624;--card:#13253a;--text:#f2f5f8;--muted:#9bb0c4;--line:#22384f;--accent:#e8b04b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,"Avenir Next",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:560px;margin:0 auto;padding:40px 16px 56px}
+header{margin-bottom:28px}
+.eyebrow{color:var(--accent);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+h1{font-size:28px;line-height:1.15;margin:8px 0 6px;font-weight:700}
+.sub{color:var(--muted);font-size:15px;margin:0}
+ul{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+a.item{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:inherit;text-decoration:none;transition:transform .12s ease,border-color .12s ease}
+a.item:hover,a.item:focus-visible{border-color:var(--accent);transform:translateY(-1px);outline:none}
+.meta{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:12px;margin-bottom:6px}
+.t{font-size:17px;font-weight:600;line-height:1.3;margin:0 0 6px}
+.d{font-size:14px;line-height:1.45;color:var(--muted);margin:0}
+.go{color:var(--accent);font-size:13px;font-weight:600;margin-top:10px;display:inline-block}
+footer{margin-top:32px;color:var(--muted);font-size:12px;text-align:center}
+.empty{color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Lectura de la semana</div>
+    <h1>Pablo Velarde</h1>
+    <p class="sub">Aviación ejecutiva: los artículos que cito en Instagram, con su fuente original.</p>
+  </header>
+  <ul id="lista"><li class="empty">Cargando…</li></ul>
+  <footer>Cada liga lleva al artículo original. El crédito es de su autor y su medio.</footer>
+</main>
+<script>
+const MESES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function fecha(s){const [y,m,d]=s.split("-").map(Number);return `${d} ${MESES[m-1]} ${y}`}
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+fetch("lecturas.json",{cache:"no-store"}).then(r=>r.json()).then(items=>{
+  const ul=document.getElementById("lista");ul.textContent="";
+  items.sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  if(!items.length){ul.append(el("li","empty","Pronto."));return}
+  for(const it of items){
+    const li=el("li"),a=el("a","item");
+    a.href=it.url;a.target="_blank";a.rel="noopener";
+    const meta=el("div","meta");meta.append(el("span",null,it.fuente||""),el("span",null,fecha(it.fecha)));
+    a.append(meta,el("p","t",it.titulo));
+    if(it.dato)a.append(el("p","d",it.dato));
+    a.append(el("span","go","Leer el artículo →"));
+    li.append(a);ul.append(li);
+  }
+}).catch(()=>{document.getElementById("lista").innerHTML='<li class="empty">No se pudo cargar la lista.</li>'});
+</script>
+</body>
+</html>
