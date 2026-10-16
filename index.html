@@ -56,7 +56,7 @@ fetch("lecturas.json",{cache:"no-store"}).then(r=>r.json()).then(items=>{
     const meta=el("div","meta");meta.append(el("span",null,it.fuente||""),el("span",null,fecha(it.fecha)));
     a.append(meta,el("p","t",it.titulo));
     if(it.dato)a.append(el("p","d",it.dato));
-    a.append(el("span","go","Leer el artículo →"));
+    a.append(el("span","go","Ver la fuente →"));
     li.append(a);ul.append(li);
   }
 }).catch(()=>{document.getElementById("lista").innerHTML='<li class="empty">No se pudo cargar la lista.</li>'});
